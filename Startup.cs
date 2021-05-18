@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.EntityFrameworkCore;
+using PokemonPC3.Models;
 namespace PokemonPC3
 {
     public class Startup
@@ -24,6 +25,7 @@ namespace PokemonPC3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<PokemonContext>(dco => dco.UseSqlServer("Server=.;Database=Pokemon;Integrated Security=true;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
