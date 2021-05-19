@@ -23,6 +23,11 @@ namespace PokemonPC3.Controllers
             return View(pueblos);
         }
 
+        public IActionResult Entrenadores() {
+            var entrenadores = _context.Entrenadores.Include(x => x.Pueblo).OrderBy(r => r.Nombre).ToList();
+            return View(entrenadores);
+        }
+
         public IActionResult NuevoPueblo() {
             ViewBag.Regiones = _context.Regiones.ToList().Select(r => new SelectListItem(r.Nombre, r.Id.ToString()));
             return View();
@@ -86,6 +91,26 @@ namespace PokemonPC3.Controllers
         }
 
         public IActionResult EditarRegionConfirmacion() {
+            return View();
+        }
+
+
+        public IActionResult NuevoEntrenador() {
+            ViewBag.Pueblos = _context.Pueblos.ToList().Select(r => new SelectListItem(r.Nombre, r.Id.ToString()));
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NuevoEntrenador(Entrenador r) {
+            if (ModelState.IsValid) {
+                _context.Add(r);
+                _context.SaveChanges();
+                return RedirectToAction("NuevoEntrenadorConfirmacion");
+            }
+            return View(r);
+        }
+
+        public IActionResult NuevoEntrenadorConfirmacion() {
             return View();
         }
     }
